@@ -1,0 +1,612 @@
+{
+  "courseTitle": "iOS App Development & Computer Science Fundamentals",
+  "version": "3.0.0",
+  "modules": [
+    {
+      "id": "chapter_1_swift_foundations",
+      "chapterNumber": 1,
+      "title": "Swift Fundamentals & Type Safety",
+      "subtitle": "Variables, constants, optionals, value types, and control flow in modern Swift.",
+      "category": "Swift Language",
+      "difficulty": "Beginner",
+      "estimatedMinutes": 15,
+      "xpReward": 100,
+      "summary": "Master the building blocks of Swift including type inference, optionals, guard statements, and collection types.",
+      "topics": [
+        {
+          "id": "c1_t1",
+          "title": "Constants, Variables & Type Inference",
+          "explanation": "Swift uses `let` to declare immutable constants and `var` to declare mutable variables. Type safety ensures that values never silently convert to incompatible types, while type inference allows the compiler to deduce types automatically from initial values.",
+          "keyTakeaway": "Prefer `let` by default for safety and immutability; only use `var` when a value must change.",
+          "codeExample": "let maxAttempts = 3\nvar currentScore: Int = 0\nlet appName = \"LearnQuest\" // Inferred as String"
+        },
+        {
+          "id": "c1_t2",
+          "title": "Optionals & Safe Unwrapping",
+          "explanation": "An Optional (`T?`) represents either a wrapped value or `nil`. Instead of force-unwrapping with `!`, use `if let` or `guard let` bindings, or the nil-coalescing operator `??` to handle missing values safely without runtime crashes.",
+          "keyTakeaway": "Use `guard let` for early exits and `??` for sensible default values.",
+          "codeExample": "func greet(user: String?) -> String {\n    guard let name = user else {\n        return \"Welcome, Student!\"\n    }\n    return \"Welcome back, \\(name)!\"\n}"
+        },
+        {
+          "id": "c1_t3",
+          "title": "Structs vs. Classes (Value vs. Reference Types)",
+          "explanation": "In Swift, `struct` and `enum` are value types (copied on assignment), whereas `class` is a reference type (shared instance managed via Automatic Reference Counting). Value types prevent unintended shared-state mutations across components.",
+          "keyTakeaway": "Default to structs for data models; use classes when identity or inheritance is required.",
+          "codeExample": "struct Point {\n    var x: Double\n    var y: Double\n}"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "c1_q1",
+          "question": "Which keyword is used to declare an immutable constant in Swift?",
+          "options": [
+            "var",
+            "let",
+            "const",
+            "final"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`let` declares a constant whose value cannot be reassigned after initialization.",
+          "points": 20
+        },
+        {
+          "id": "c1_q2",
+          "question": "What does an Optional type `String?` represent in Swift?",
+          "options": [
+            "A string that is always empty",
+            "Either a valid String value or nil",
+            "A mutable character array",
+            "A background thread string"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Optionals explicitly model the possible absence of a value (`nil`).",
+          "points": 20
+        },
+        {
+          "id": "c1_q3",
+          "question": "Which operator provides a default value when an Optional is nil?",
+          "options": [
+            "?:",
+            "??",
+            "!!",
+            "&&"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "The nil-coalescing operator (`??`) unwraps an optional or returns a fallback value if it is `nil`.",
+          "points": 20
+        },
+        {
+          "id": "c1_q4",
+          "question": "How are Swift structs passed when assigned to a new variable?",
+          "options": [
+            "By value (copied)",
+            "By reference pointer",
+            "Via NSObject bridging",
+            "As unowned pointers"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Structs in Swift are value types and use copy-on-write semantics.",
+          "points": 20
+        },
+        {
+          "id": "c1_q5",
+          "question": "Why is `guard let` preferred at the start of a function?",
+          "options": [
+            "It executes on a background queue",
+            "It unwraps optionals and exits early if conditions fail",
+            "It suppresses compiler errors",
+            "It converts classes into structs"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`guard let` keeps the happy path unindented and guarantees unwrapped values remain in scope.",
+          "points": 20
+        }
+      ]
+    },
+    {
+      "id": "chapter_2_uikit_storyboards",
+      "chapterNumber": 2,
+      "title": "UIKit Lifecycle & Storyboard Design",
+      "subtitle": "UIViewController lifecycle, Auto Layout constraints, segues, and IBOutlets.",
+      "category": "UIKit & UI",
+      "difficulty": "Beginner",
+      "estimatedMinutes": 20,
+      "xpReward": 120,
+      "summary": "Understand how UIViewControllers manage screen hierarchies, how Storyboards instantiate scenes, and how Auto Layout adapts interfaces across screen sizes.",
+      "topics": [
+        {
+          "id": "c2_t1",
+          "title": "UIViewController Lifecycle Methods",
+          "explanation": "`viewDidLoad()` is called once when the view hierarchy loads into memory\u2014ideal for initial setup and bindings. `viewWillAppear(_:)` runs every time the screen is about to become visible, making it ideal for refreshing dynamic progress state.",
+          "keyTakeaway": "Perform one-time layout in `viewDidLoad()` and state refreshes in `viewWillAppear(_:)`.",
+          "codeExample": "override func viewDidLoad() {\n    super.viewDidLoad()\n    setupTableView()\n}\n\noverride func viewWillAppear(_ animated: Bool) {\n    super.viewWillAppear(animated)\n    refreshProgress()\n}"
+        },
+        {
+          "id": "c2_t2",
+          "title": "Storyboards, Scenes & Identifiers",
+          "explanation": "Storyboards visually organize view controllers as scenes connected by segues or instantiated via `Storyboard ID`. Using `instantiateViewController(withIdentifier:)` enables passing strongly typed ViewModels while maintaining visual Storyboard design.",
+          "keyTakeaway": "Assign a clear Storyboard ID matching the class name for reliable instantiation.",
+          "codeExample": "let storyboard = UIStoryboard(name: \"Main\", bundle: nil)\nlet vc = storyboard.instantiateViewController(withIdentifier: \"QuizViewController\")"
+        },
+        {
+          "id": "c2_t3",
+          "title": "Auto Layout & Stack Views",
+          "explanation": "Auto Layout calculates frame positions dynamically from constraints (leading, trailing, top, bottom, width, height). `UIStackView` simplifies vertical and horizontal layouts by managing child constraints automatically.",
+          "keyTakeaway": "Always set `translatesAutoresizingMaskIntoConstraints = false` when adding programmatic constraints.",
+          "codeExample": "stackView.axis = .vertical\nstackView.spacing = 12\nstackView.alignment = .fill"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "c2_q1",
+          "question": "Which lifecycle method is called only once when the view controller's view is first loaded into memory?",
+          "options": [
+            "viewWillAppear(_:)",
+            "viewDidAppear(_:)",
+            "viewDidLoad()",
+            "viewWillLayoutSubviews()"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "`viewDidLoad()` runs once after the view controller loads its view hierarchy.",
+          "points": 25
+        },
+        {
+          "id": "c2_q2",
+          "question": "What property must be set to `false` when applying programmatic Auto Layout constraints?",
+          "options": [
+            "clipsToBounds",
+            "isUserInteractionEnabled",
+            "translatesAutoresizingMaskIntoConstraints",
+            "autoresizesSubviews"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Disabling `translatesAutoresizingMaskIntoConstraints` prevents conflicting autoresizing mask constraints.",
+          "points": 25
+        },
+        {
+          "id": "c2_q3",
+          "question": "Which UIKit container arranges subviews linearly along a horizontal or vertical axis?",
+          "options": [
+            "UIScrollView",
+            "UIStackView",
+            "UIPickerView",
+            "UICollectionViewFlowLayout"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`UIStackView` manages layout constraints automatically for a vertical or horizontal stack of views.",
+          "points": 25
+        },
+        {
+          "id": "c2_q4",
+          "question": "How do you instantiate a specific scene from `Main.storyboard` in code?",
+          "options": [
+            "UIStoryboard(name: \"Main\", bundle: nil).instantiateViewController(withIdentifier:)",
+            "Bundle.main.loadNibNamed()",
+            "UINavigationController.init(nibName:)",
+            "UIView.animate()"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "`instantiateViewController(withIdentifier:)` creates an instance of the scene matching the Storyboard ID.",
+          "points": 25
+        },
+        {
+          "id": "c2_q5",
+          "question": "Why are `@IBOutlet` properties typically declared as `weak`?",
+          "options": [
+            "To make them compile faster",
+            "To avoid strong reference cycles with the view hierarchy",
+            "To allow background thread access",
+            "Because structs require weak references"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "The view controller's root `view` already holds a strong reference to its subviews.",
+          "points": 20
+        }
+      ]
+    },
+    {
+      "id": "chapter_3_uitableview_lists",
+      "chapterNumber": 3,
+      "title": "Mastering UITableView & Cell Reuse",
+      "subtitle": "DataSource, Delegate, cell dequeueing, dynamic row heights, and pull-to-refresh.",
+      "category": "UIKit Lists",
+      "difficulty": "Intermediate",
+      "estimatedMinutes": 20,
+      "xpReward": 130,
+      "summary": "Build smooth, high-performance scrolling lists using UITableView cell reuse queues, custom cells, and automatic self-sizing rows.",
+      "topics": [
+        {
+          "id": "c3_t1",
+          "title": "UITableViewDataSource & UITableViewDelegate",
+          "explanation": "`UITableViewDataSource` supplies the data (number of sections, rows, and configured cells), while `UITableViewDelegate` handles user interaction (row selection, swipe actions, and custom header views).",
+          "keyTakeaway": "Separate data population (`DataSource`) from user interaction (`Delegate`).",
+          "codeExample": "func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {\n    return viewModel.numberOfModules\n}"
+        },
+        {
+          "id": "c3_t2",
+          "title": "Cell Reuse Queue & Performance",
+          "explanation": "Instead of allocating hundreds of views simultaneously, `dequeueReusableCell(withIdentifier:for:)` recycles off-screen cells as the user scrolls. Always reset stateful subviews inside your cell's `configure` method.",
+          "keyTakeaway": "Register custom cells once in `viewDidLoad()` and dequeue them by reuse identifier.",
+          "codeExample": "let cell = tableView.dequeueReusableCell(\n    withIdentifier: ModuleTableViewCell.reuseIdentifier,\n    for: indexPath\n) as! ModuleTableViewCell"
+        },
+        {
+          "id": "c3_t3",
+          "title": "Self-Sizing Cells with Automatic Dimension",
+          "explanation": "By setting `tableView.rowHeight = UITableView.automaticDimension` and providing a complete top-to-bottom chain of Auto Layout constraints inside `contentView`, `UITableView` computes dynamic row heights automatically.",
+          "keyTakeaway": "Pin the top-most subview to `contentView.topAnchor` and bottom-most subview to `contentView.bottomAnchor`.",
+          "codeExample": "tableView.rowHeight = UITableView.automaticDimension\ntableView.estimatedRowHeight = 165"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "c3_q1",
+          "question": "Which protocol method is required by `UITableViewDataSource`?",
+          "options": [
+            "tableView(_:didSelectRowAt:)",
+            "tableView(_:cellForRowAt:)",
+            "tableView(_:heightForRowAt:)",
+            "tableView(_:willDisplay:forRowAt:)"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`numberOfRowsInSection` and `cellForRowAt` are the two required `UITableViewDataSource` methods.",
+          "points": 25
+        },
+        {
+          "id": "c3_q2",
+          "question": "How does `dequeueReusableCell(withIdentifier:for:)` improve scrolling performance?",
+          "options": [
+            "It pre-renders the entire table into an image",
+            "It recycles cell instances that scroll off-screen instead of allocating new views",
+            "It disables Auto Layout",
+            "It runs UI rendering on a background thread"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Reusing existing cell allocations keeps memory usage low and frame rates at 60/120 FPS.",
+          "points": 25
+        },
+        {
+          "id": "c3_q3",
+          "question": "What is required for `UITableView.automaticDimension` to calculate cell height accurately?",
+          "options": [
+            "Implementing heightForRowAt with a fixed CGFloat",
+            "An unbroken chain of vertical Auto Layout constraints from contentView top to bottom",
+            "Using fixed frame rects in layoutSubviews",
+            "Disabling scroll bounce"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Auto Layout needs continuous vertical constraints between `contentView.topAnchor` and `contentView.bottomAnchor`.",
+          "points": 25
+        },
+        {
+          "id": "c3_q4",
+          "question": "Which `UITableViewDelegate` method handles a user tapping on a module row?",
+          "options": [
+            "tableView(_:didSelectRowAt:)",
+            "tableView(_:canEditRowAt:)",
+            "tableView(_:commit:forRowAt:)",
+            "tableView(_:numberOfRowsInSection:)"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "`tableView(_:didSelectRowAt:)` is triggered when a user taps a row.",
+          "points": 25
+        },
+        {
+          "id": "c3_q5",
+          "question": "Which control is attached to `tableView.refreshControl` to support pull-to-refresh?",
+          "options": [
+            "UIActivityIndicatorView",
+            "UIRefreshControl",
+            "UIPageControl",
+            "UIProgressView"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`UIRefreshControl` provides native pull-to-refresh behavior in `UITableView` and `UIScrollView`.",
+          "points": 30
+        }
+      ]
+    },
+    {
+      "id": "chapter_4_mvvm_architecture",
+      "chapterNumber": 4,
+      "title": "MVVM Architecture in iOS",
+      "subtitle": "Separating Models, Views, and ViewModels for testable, maintainable apps.",
+      "category": "Architecture",
+      "difficulty": "Intermediate",
+      "estimatedMinutes": 25,
+      "xpReward": 150,
+      "summary": "Learn how Model-View-ViewModel eliminates Massive View Controllers by isolating presentation logic, state transformation, and service calls inside ViewModels.",
+      "topics": [
+        {
+          "id": "c4_t1",
+          "title": "Roles of Model, View, and ViewModel",
+          "explanation": "In MVVM:\n\u2022 Model holds domain data structs (`LearningModule`, `UserProgress`).\n\u2022 View / ViewController renders UI and forwards user actions.\n\u2022 ViewModel transforms Model data into display-ready strings/progress values and coordinates API & storage services.",
+          "keyTakeaway": "ViewModels should never `import UIKit` or reference `UIView` subclasses directly.",
+          "codeExample": "final class ModulesViewModel {\n    var onDataUpdated: (() -> Void)?\n    var syllabusCompletionPercentage: Int { ... }\n}"
+        },
+        {
+          "id": "c4_t2",
+          "title": "Data Binding via Closures & Delegation",
+          "explanation": "Views observe ViewModel state updates using lightweight closure callbacks (`onDataUpdated`), `Combine`, or protocols. Remember to capture `[weak self]` inside closures stored by the ViewModel to avoid retain cycles.",
+          "keyTakeaway": "Always use `[weak self]` when binding ViewController callbacks to a ViewModel.",
+          "codeExample": "viewModel.onDataUpdated = { [weak self] in\n    self?.tableView.reloadData()\n}"
+        },
+        {
+          "id": "c4_t3",
+          "title": "Dependency Injection & Unit Testing",
+          "explanation": "By passing service protocols (`APIServiceProtocol`, `LocalStorageServiceProtocol`) into a ViewModel's initializer with default shared instances, you can easily inject mock services during unit tests without network or disk side effects.",
+          "keyTakeaway": "Depend on protocols rather than concrete singletons for clean testability.",
+          "codeExample": "init(apiService: APIServiceProtocol = APIService.shared) {\n    self.apiService = apiService\n}"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "c4_q1",
+          "question": "In MVVM architecture, which layer is responsible for formatting model data for display?",
+          "options": [
+            "Model",
+            "ViewModel",
+            "UIViewController",
+            "AppDelegate"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "The ViewModel transforms raw domain Models into presentation-ready values for the View.",
+          "points": 30
+        },
+        {
+          "id": "c4_q2",
+          "question": "Why should a ViewModel avoid importing `UIKit`?",
+          "options": [
+            "UIKit is deprecated",
+            "To keep the ViewModel decoupled from UI classes and easily unit-testable",
+            "Because Swift files cannot import UIKit",
+            "To reduce app bundle size"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Keeping ViewModels independent of UIKit ensures clean separation of concerns and fast unit tests.",
+          "points": 30
+        },
+        {
+          "id": "c4_q3",
+          "question": "What capture list prevents memory leaks when binding a closure in a ViewController to its ViewModel?",
+          "options": [
+            "[strong self]",
+            "[weak self]",
+            "[lazy self]",
+            "[static self]"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`[weak self]` breaks the strong reference cycle between the ViewController and the ViewModel.",
+          "points": 30
+        },
+        {
+          "id": "c4_q4",
+          "question": "How does protocol-based Dependency Injection help when testing a ViewModel?",
+          "options": [
+            "It allows injecting mock API and storage services in unit tests",
+            "It automatically generates Storyboards",
+            "It replaces the Swift compiler",
+            "It encrypts UserDefaults"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Injecting protocol abstractions allows tests to supply deterministic mock responses.",
+          "points": 30
+        },
+        {
+          "id": "c4_q5",
+          "question": "Which responsibility belongs in `UIViewController` under MVVM?",
+          "options": [
+            "Parsing raw JSON data from URLSession",
+            "Computing XP badge unlock rules",
+            "Rendering UI subviews and forwarding user taps to the ViewModel",
+            "Directly mutating low-level network sockets"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "In MVVM, the ViewController acts as part of the View layer, handling layout and user input events.",
+          "points": 30
+        }
+      ]
+    },
+    {
+      "id": "chapter_5_local_persistence",
+      "chapterNumber": 5,
+      "title": "Local Data Storage & Codable Persistence",
+      "subtitle": "Saving XP, badges, and progress with UserDefaults, Codable, and FileManager.",
+      "category": "Data Storage",
+      "difficulty": "Intermediate",
+      "estimatedMinutes": 20,
+      "xpReward": 140,
+      "summary": "Persist student progress, high scores, and cached learning modules across app launches using Swift's Codable protocol, UserDefaults, and the Documents directory.",
+      "topics": [
+        {
+          "id": "c5_t1",
+          "title": "Encoding & Decoding with Codable",
+          "explanation": "Swift's `Codable` typealias combines `Encodable` and `Decodable`. Using `JSONEncoder` and `JSONDecoder`, complex nested structs (`UserProgress`, `LearningModule`) serialize cleanly to and from `Data`.",
+          "keyTakeaway": "Conform model structs to `Codable` for automatic JSON serialization.",
+          "codeExample": "let data = try JSONEncoder().encode(progress)\nlet decoded = try JSONDecoder().decode(UserProgress.self, from: data)"
+        },
+        {
+          "id": "c5_t2",
+          "title": "UserDefaults for Lightweight State",
+          "explanation": "`UserDefaults.standard` stores user preferences and lightweight serialized state (such as `UserProgress` XP and completed module IDs) in a key-value plist managed by iOS.",
+          "keyTakeaway": "Use reverse-DNS keys (e.g., `com.learnquest.userProgress.v3`) to avoid key collisions.",
+          "codeExample": "UserDefaults.standard.set(data, forKey: \"com.learnquest.userProgress.v3\")"
+        },
+        {
+          "id": "c5_t3",
+          "title": "FileManager & the Sandbox Documents Directory",
+          "explanation": "For larger datasets such as cached syllabus JSON files, store data inside the app sandbox's `.documentDirectory` or `.cachesDirectory` using `data.write(to: url, options: .atomic)` to prevent partial writes.",
+          "keyTakeaway": "Use `.atomic` file writes so corrupted files are never left behind if interrupted.",
+          "codeExample": "let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!\nlet fileURL = docs.appendingPathComponent(\"cached_modules.json\")\ntry data.write(to: fileURL, options: .atomic)"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "c5_q1",
+          "question": "What two protocols are combined by the `Codable` typealias in Swift?",
+          "options": [
+            "Hashable and Equatable",
+            "Encodable and Decodable",
+            "Sequence and Collection",
+            "Observable and Identifiable"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`typealias Codable = Decodable & Encodable`.",
+          "points": 28
+        },
+        {
+          "id": "c5_q2",
+          "question": "Which class converts a `Codable` Swift struct into JSON `Data`?",
+          "options": [
+            "JSONSerialization",
+            "JSONEncoder",
+            "PropertyListDecoder",
+            "NSKeyedArchiver"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`JSONEncoder` encodes any `Encodable` value into JSON `Data`.",
+          "points": 28
+        },
+        {
+          "id": "c5_q3",
+          "question": "What is `UserDefaults` best suited for storing?",
+          "options": [
+            "Multi-gigabyte video recordings",
+            "Lightweight user preferences and progress metadata",
+            "Temporary GPU shaders",
+            "High-frequency real-time audio buffers"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`UserDefaults` is ideal for preferences and small state objects like user progress.",
+          "points": 28
+        },
+        {
+          "id": "c5_q4",
+          "question": "What does the `.atomic` option do when writing `Data` to a file URL?",
+          "options": [
+            "Writes to a temporary file first and renames it to prevent partial corruption",
+            "Compresses the file into a zip archive",
+            "Uploads the file to iCloud automatically",
+            "Deletes the file after reading"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Atomic writing ensures the destination file is either completely written or left untouched.",
+          "points": 28
+        },
+        {
+          "id": "c5_q5",
+          "question": "How do you locate a bundled JSON file such as `modules.json` inside the app bundle?",
+          "options": [
+            "Bundle.main.url(forResource: \"modules\", withExtension: \"json\")",
+            "UserDefaults.standard.url(forKey: \"modules\")",
+            "UIScreen.main.bounds",
+            "ProcessInfo.processInfo.environment"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "`Bundle.main.url(forResource:withExtension:)` locates resources packaged inside the app target.",
+          "points": 28
+        }
+      ]
+    },
+    {
+      "id": "chapter_6_urlsession_networking",
+      "chapterNumber": 6,
+      "title": "Web Services with URLSession",
+      "subtitle": "REST API requests, HTTP status validation, JSON decoding, and main-thread UI dispatch.",
+      "category": "Networking",
+      "difficulty": "Advanced",
+      "estimatedMinutes": 25,
+      "xpReward": 160,
+      "summary": "Integrate remote web services using URLSession, validate HTTP responses, decode JSON payloads, and safely update UIKit components on the main thread.",
+      "topics": [
+        {
+          "id": "c6_t1",
+          "title": "Creating & Resuming URLSession Data Tasks",
+          "explanation": "`URLSession.shared.dataTask(with:completionHandler:)` creates an asynchronous network request. Tasks start in a suspended state, so calling `.resume()` is mandatory to initiate the HTTP request.",
+          "keyTakeaway": "Never forget to call `task.resume()` after creating a `URLSessionDataTask`.",
+          "codeExample": "let task = URLSession.shared.dataTask(with: url) { data, response, error in\n    // Handle response\n}\ntask.resume()"
+        },
+        {
+          "id": "c6_t2",
+          "title": "Validating HTTP Status Codes & Decoding",
+          "explanation": "Before decoding the response body, cast `URLResponse` to `HTTPURLResponse` and verify `(200...299).contains(httpResponse.statusCode)`. Then decode the JSON payload using `JSONDecoder`.",
+          "keyTakeaway": "Always check for a 2xx HTTP status code before attempting JSON decoding.",
+          "codeExample": "guard let http = response as? HTTPURLResponse,\n      (200...299).contains(http.statusCode),\n      let data = data else { return }"
+        },
+        {
+          "id": "c6_t3",
+          "title": "Dispatching UI Updates to the Main Queue",
+          "explanation": "`URLSession` completion handlers execute on a background queue. Because all `UIKit` updates must occur on the main thread, wrap completion callbacks in `DispatchQueue.main.async { ... }`.",
+          "keyTakeaway": "Always hop back to `DispatchQueue.main.async` before updating UIKit views or reloading `UITableView`.",
+          "codeExample": "DispatchQueue.main.async {\n    completion(.success(decoded.modules))\n}"
+        }
+      ],
+      "quiz": [
+        {
+          "id": "c6_q1",
+          "question": "Why does a newly created `URLSessionDataTask` not start immediately?",
+          "options": [
+            "Tasks are created in a suspended state and require calling `.resume()`",
+            "It waits for the user to tap the screen",
+            "URLSession only runs when connected to Xcode",
+            "It requires calling `.startNetwork()` on UIApplication"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "All `URLSessionTask` instances begin suspended; calling `.resume()` starts execution.",
+          "points": 32
+        },
+        {
+          "id": "c6_q2",
+          "question": "On which thread/queue does `URLSession`'s `dataTask` completion handler run by default?",
+          "options": [
+            "The Main UI Thread",
+            "A background delegate queue",
+            "The CoreAudio real-time thread",
+            "The GPU render thread"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "`URLSession` executes completion handlers on a background queue to avoid blocking the UI.",
+          "points": 32
+        },
+        {
+          "id": "c6_q3",
+          "question": "How must you update `UITableView` after receiving network data in a `URLSession` callback?",
+          "options": [
+            "Directly inside the background callback",
+            "Inside `DispatchQueue.main.async { ... }`",
+            "Inside `DispatchQueue.global(qos: .background)`",
+            "By restarting the app"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "UIKit is not thread-safe; all UI mutations must be dispatched to the main queue.",
+          "points": 32
+        },
+        {
+          "id": "c6_q4",
+          "question": "Which HTTP status code range indicates a successful web service response?",
+          "options": [
+            "100...199",
+            "200...299",
+            "400...499",
+            "500...599"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "HTTP 2xx status codes (such as 200 OK) indicate success.",
+          "points": 32
+        },
+        {
+          "id": "c6_q5",
+          "question": "Why is an offline fallback cache useful alongside `URLSession` in an educational app?",
+          "options": [
+            "It lets students continue studying and taking quizzes even without an internet connection",
+            "It replaces the need for UIViewControllers",
+            "It doubles screen brightness",
+            "It disables Auto Layout"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Caching syllabus modules locally ensures uninterrupted learning offline.",
+          "points": 32
+        }
+      ]
+    }
+  ]
+}
