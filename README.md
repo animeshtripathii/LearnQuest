@@ -73,9 +73,9 @@ LearnQuest/
 
 | Account Role | Username / Email | Password | Logged In Identity |
 |---|---|---|---|
-| **Default Student** | `student@learnquest.com` | `quest123` | **Animesh Tripathi** |
-| **Student ID** | `animesh` | `12319335` | **Animesh Tripathi (12319335)** |
-| **Admin Scholar** | `admin` | `123456` | **Admin Scholar** |
+| **Default Student** | `student@learnquest.com` | `quest123` 
+| **Student ID** | `animesh` | `12319335` 
+| **Admin Scholar** | `admin` | `123456` 
 
 ---
 
